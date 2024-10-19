@@ -34,6 +34,7 @@ form {
     margin: 0 10px;
     font-size: 20px;
     height: 50px;
+    cursor: pointer;
 }
 
 .categorie:hover {
@@ -48,6 +49,11 @@ form {
     padding: 0;
 }
 
+.profile-container {
+    position: relative;
+    margin-left: auto;
+}
+
 .profile-picture {
     height: 50px;
     width: 50px;
@@ -56,4 +62,47 @@ form {
     background-color: #FFCE33;
     font-size: 30px;
     margin-left: auto;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50px;
+    width: 150px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 15px;
+}
+
+.dropdown-menu button {
+    border-radius: 15px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropdown-menu button {
+    background-color: white;
+    border: none;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.dropdown-menu button:hover {
+    background-color: rgb(236, 236, 236);
 }

@@ -17,8 +17,19 @@
                 <button class="categorie" value="finance">Finance</button>
                 <button class="categorie" value="business">Business</button>
             </form>
-            <button class="profile-picture">Y</button>
+
+            <div class="profile-container">
+                <button class="profile-picture" onclick="toggleDropdown()">Y</button>
+                <div class="dropdown-menu">
+                    <form action="/user" method="post">
+                        <button type="submit" name="user" value="1">Y</button>
+                        <button type="submit" name="user" value="add">Add User</button>
+                    </form>
+                </div>
+            </div>
+            
         </div>
     </div>
+    <script src="scripts/main.js"></script>
 </body>
 </html>
