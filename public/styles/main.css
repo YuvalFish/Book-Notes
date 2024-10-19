@@ -1,6 +1,11 @@
 * {
-    margin: 0 60px;
+    margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0 120px;
 }
 
 a {
@@ -27,7 +32,7 @@ form {
     margin: 0 15px 0 5px;
 }
 
-.categorie {
+.category {
     width: 150px;
     background-color: white;
     border-radius: 999px;
@@ -35,10 +40,11 @@ form {
     font-size: 20px;
     height: 50px;
     cursor: pointer;
+    transition: background-color .3s;
 }
 
-.categorie:hover {
-    background-color: rgb(236, 236, 236);
+.category:hover {
+    background-color: #FFCE33;
 }
 
 .form-categories {
@@ -63,6 +69,11 @@ form {
     font-size: 30px;
     margin-left: auto;
     cursor: pointer;
+    transition: background-color .3s;
+}
+
+.profile-picture:hover {
+    background-color: #eec028;
 }
 
 .dropdown-menu {
@@ -70,9 +81,9 @@ form {
     position: absolute;
     top: 60px;
     right: 0;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 50px;
+    background-color: #FFCE33;
+    /* border: 1px solid black; */
+    border-radius: 30px;
     width: 150px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -94,7 +105,7 @@ form {
 }
 
 .dropdown-menu button {
-    background-color: white;
+    background-color: #FFCE33;
     border: none;
     width: 100%;
     padding: 10px 0;
@@ -104,5 +115,58 @@ form {
 }
 
 .dropdown-menu button:hover {
-    background-color: rgb(236, 236, 236);
+    background-color: #eec028;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 40px 10px; 
+    margin-top: 50px;
+    /* border: 1px solid black; */
+    padding-left: 50px;
+    width: 100%;
+    height: auto;
+}
+
+.add-book {
+    border: 1px solid black;
+    width: 200px;
+    height: 300px;
+    background-color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.plus-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.add-book:hover {
+    background-color: #FFCE33;
+    transition: background-color .5s;
+}
+
+.book {
+    /* border: 1px solid black; */
+    width: 200px;
+    height: 300px;
+    cursor: pointer;
+    border: none;
+}
+
+.book img {
+    border-radius: 15px;
+    transition: all .2s ease-in-out;
+}
+
+.book img:hover {
+    transform: scale(1.1);
+}
+
+.book-cover {
+    width: 200px;
+    height: 300px;
 }
