@@ -83,15 +83,15 @@ form {
     right: 0;
     background-color: #FFCE33;
     /* border: 1px solid black; */
-    border-radius: 30px;
+    border-radius: 15px;
     width: 150px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    padding: 15px;
+    padding: 5px;
 }
 
 .dropdown-menu button {
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .dropdown-menu.show {
@@ -155,6 +155,7 @@ form {
     height: 300px;
     cursor: pointer;
     border: none;
+    background-color: white;
 }
 
 .book img {
