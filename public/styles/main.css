@@ -1,0 +1,59 @@
+* {
+    margin: 0 60px;
+    padding: 0;
+}
+
+a {
+    margin: 0;
+}
+
+.navbar {
+    margin-top: 20px;
+    /* border: 1px solid; */
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin: 0 15px 0 5px;
+}
+
+.categorie {
+    width: 150px;
+    background-color: white;
+    border-radius: 999px;
+    margin: 0 10px;
+    font-size: 20px;
+    height: 50px;
+}
+
+.categorie:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+.form-categories {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-picture {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #FFCE33;
+    font-size: 30px;
+    margin-left: auto;
+}
