@@ -12,13 +12,13 @@
     </a>
 
     <div class="form-container">
-        <form action="/api/new-book" method="post" class="form">
+        <form action="/api/new-book" method="post" class="form" enctype="multipart/form-data">
             <% if (locals.user) { %>
-                <input type="hidden" name="user_id" value="<%=user.id%>"/>
+                <input type="hidden" name="user_id" value="<%=user%>"/>
             <% } %>
             
-            <input type="text" name="book-name" class="input-field" placeholder="Book Name" required>
-            <input type="text" name="author-name" class="input-field" placeholder="Author Name" required>
+            <input type="text" name="book_name" class="input-field" placeholder="Book Name" required>
+            <input type="text" name="author_name" class="input-field" placeholder="Author Name" required>
             <select class="input-field" name="category" required>
                 <option value="0">Select a category</option>
                 <!-- Renders all categories -->
@@ -37,5 +37,7 @@
             <button class="input-field" type="submit">Upload</button>
         </form>
     </div>
+
+<script src="scripts/new_book.js"></script>   
 </body>
 </html>

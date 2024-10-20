@@ -53,6 +53,9 @@ select.input-field {
     border-radius: 15px;
     position: relative;
     transition: background-color 0.3s;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .cover-upload:hover {

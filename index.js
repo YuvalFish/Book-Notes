@@ -1,8 +1,34 @@
 import express from "express";
 import pg from "pg";
+import multer from "multer";
+import crypto from 'crypto';
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import dotenv from 'dotenv';
+import sharp from 'sharp';
+
+dotenv.config();
+
+// Generates a random image name to remove overwrites and improve security
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey
+    },
+    region: bucketRegion
+});
 
 const app = express();
 const PORT = 3000;
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
@@ -37,19 +63,35 @@ app.get("/", async (req, res) => {
     );
 });
 
-app.post("/add-book", (req, res) => {
-    const user = req.body.id;
+app.get("/add-book", (req, res) => {
+    console.log('current_user',current_user);
 
     res.render("new_book.ejs", 
         {
-            user: user,
+            user: current_user,
             categories: categories
         }
     );
 });
 
-app.post("/api/new-book", (req, res) => {
-    console.log(req.body);
+app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
+    // console.log(req.body);
+    // console.log(req.file);
+
+    // Resize image
+    const buffer = await sharp(req.file.buffer).resize({width: 400, height: 500, fit: "contain"}).toBuffer();
+
+    const params = {
+        Bucket: bucketName,
+        Key: randomImageName(),
+        Body: buffer,
+        ContentType: req.file.mimetype,
+    };
+
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
+    res.redirect("/");
 });
 
 app.listen(PORT, () => {
