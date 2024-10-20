@@ -5,24 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css">
     <title>Book Notes</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">    
 </head>
 <body>
     <div class="main-container">
+        <!-- Navbar -->
         <div class="navbar">
+
             <a href="/">
                 <img src="assets/book_icon.png" alt="logo" class="logo">
             </a>
+
+            <!-- Renders all categories -->
             <form action="/category" method="post" class="form-categories">
-                <button type="submit" class="category" value="all">All</button>
-                <button type="submit" class="category" value="finance">Finance</button>
-                <button type="submit" class="category" value="business">Business</button>
+
+                <% if (locals.categories) { %>
+                    <% for (const category of categories) { %>
+                        <button type="submit" class="category" value="<%=category.id%>"><%=category.name%></button>
+                    <% } %>
+                <% } %>
+
             </form>
 
             <div class="profile-container">
-                <button class="profile-picture" onclick="toggleDropdown()">Y</button>
+                <!-- Renders the current user profile -->
+                <% if (locals.current_user) { %>
+                    <button class="profile-picture" onclick="toggleDropdown()"><%=current_user.name[0]%></button>
+                <% } %>
+                
                 <div class="dropdown-menu">
                     <form action="/user" method="post">
-                        <button type="submit" name="user" value="1">Y</button>
+                        <!-- Renders all the users in the database -->
+                        <% if (locals.users) { %>
+                            <% for (const user of users) { %>
+                                <button type="submit" name="user" value="<%=user.id%>"><%=user.name%></button>
+                            <% } %>
+                        <% } %>
+
                         <button type="submit" name="user" value="add">Add User</button>
                     </form>
                 </div>
@@ -30,6 +53,7 @@
 
         </div>
 
+        <!-- Books -->
         <div class="grid-container">
             <form action="/add-book" method="post">
                 <button type="submit" class="add-book">
@@ -37,41 +61,21 @@
                 </button>
             </form>
 
-            <form action="/book/1" method="get">
-                <button type="submit" class="book">
-                    <img src="assets/think-and-grow-rich.jpg" alt="book cover" class="book-cover">
-                </button>
-            </form>
+            <!-- Render user books -->
+            <% if (locals.books) { %>
+                <% for (const book of books) { %>
 
-            <form action="/book/1" method="get">
-                <button type="submit" class="book">
-                    <img src="assets/think-and-grow-rich.jpg" alt="book cover" class="book-cover">
-                </button>
-            </form>
+                    <form action="/book/<%=book.id%>" method="get">
+                        <button type="submit" class="book">
+                            <img src="<%=book.cover_image%>" alt="book cover" class="book-cover">
+                        </button>
+                        <h3 class="book-name"><%=book.name%></h3>
+                        <h5 class="author-name"><%=book.author%></h5>
+                    </form>
 
-            <form action="/book/1" method="get">
-                <button type="submit" class="book">
-                    <img src="assets/think-and-grow-rich.jpg" alt="book cover" class="book-cover">
-                </button>
-            </form>
+                <% } %>
+            <% } %>
 
-            <form action="/book/1" method="get">
-                <button type="submit" class="book">
-                    <img src="assets/think-and-grow-rich.jpg" alt="book cover" class="book-cover">
-                </button>
-            </form>
-
-            <form action="/book/1" method="get">
-                <button type="submit" class="book">
-                    <img src="assets/think-and-grow-rich.jpg" alt="book cover" class="book-cover">
-                </button>
-            </form>
-
-            <form action="/book/1" method="get">
-                <button type="submit" class="book">
-                    <img src="assets/think-and-grow-rich.jpg" alt="book cover" class="book-cover">
-                </button>
-            </form>
         </div>
     </div>
     <script src="scripts/main.js"></script>

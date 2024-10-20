@@ -2,6 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 html {
@@ -41,6 +45,7 @@ form {
     height: 50px;
     cursor: pointer;
     transition: background-color .3s;
+    font-size: 1rem;
 }
 
 .category:hover {
@@ -170,4 +175,13 @@ form {
 .book-cover {
     width: 200px;
     height: 300px;
+}
+
+.book-name {
+    margin-top: 10px;
+}
+
+.author-name {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 400;
 }
