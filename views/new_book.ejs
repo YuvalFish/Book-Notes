@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="stylesheet" href="styles/new_book.css">
+</head>
+<body>
+    <a href="/">
+        <img src="assets/back-icon.png" alt="back icon" class="back-button"/>
+    </a>
+
+    <div class="form-container">
+        <form action="/api/new-book" method="post" class="form">
+            <% if (locals.user) { %>
+                <input type="hidden" name="user_id" value="<%=user.id%>"/>
+            <% } %>
+            
+            <input type="text" name="book-name" class="input-field" placeholder="Book Name" required>
+            <input type="text" name="author-name" class="input-field" placeholder="Author Name" required>
+            <select class="input-field" name="category" required>
+                <option value="0">Select a category</option>
+                <!-- Renders all categories -->
+                <% if (locals.categories) { %>
+                    <% for (const category of categories) { %>
+                        <option value="<%=category.id%>"><%=category.name%></option>
+                    <% } %>
+                <% } %>
+            </select>
+
+            <input type="file" name="cover-image" id="cover-upload" required hidden>
+            <label for="cover-upload" class="cover-upload">
+                <img src="assets/plus-icon.png" alt="plus icon" class="plus-icon">
+            </label>
+
+            <button class="input-field" type="submit">Upload</button>
+        </form>
+    </div>
+</body>
+</html>

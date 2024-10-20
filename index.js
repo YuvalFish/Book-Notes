@@ -13,7 +13,6 @@ let books = [
 ];
 
 let categories = [
-    {id: 1, name: 'All'},
     {id: 2, name: 'Finance'},
     {id: 3, name: 'Personal Development'},
     {id: 4, name: 'Business'}
@@ -36,6 +35,21 @@ app.get("/", async (req, res) => {
             users: users
         }
     );
+});
+
+app.post("/add-book", (req, res) => {
+    const user = req.body.id;
+
+    res.render("new_book.ejs", 
+        {
+            user: user,
+            categories: categories
+        }
+    );
+});
+
+app.post("/api/new-book", (req, res) => {
+    console.log(req.body);
 });
 
 app.listen(PORT, () => {

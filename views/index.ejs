@@ -23,6 +23,8 @@
             <!-- Renders all categories -->
             <form action="/category" method="post" class="form-categories">
 
+                <button type="submit" class="category" value="0">All</button>
+
                 <% if (locals.categories) { %>
                     <% for (const category of categories) { %>
                         <button type="submit" class="category" value="<%=category.id%>"><%=category.name%></button>
@@ -56,6 +58,11 @@
         <!-- Books -->
         <div class="grid-container">
             <form action="/add-book" method="post">
+                <!-- Sends the user id -->
+                <% if (locals.current_user) { %>
+                    <input type="hidden" name="id" value="<%=current_user.id%>">
+                <% } %>
+
                 <button type="submit" class="add-book">
                     <img src="assets/plus-icon.png" alt="plus icon" class="plus-icon">
                 </button>
