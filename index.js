@@ -70,29 +70,44 @@ async function getCoverImageUrl() {
 
     // Foreach book fetch the temp image cover url from AWS S3 and update it in the database
     for (const book of result.rows) {
-        const getObjectParams = {
-            Bucket: bucketName,
-            Key: book.cover_image,
-        };
-        const command = new GetObjectCommand(getObjectParams);
-        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        const currentTime = new Date();
 
-        await db.query("UPDATE books SET temp_cover_url = $1 WHERE id = $2;", [url, book.id]);
+        // Check if temp URL is expired or not set
+        if (!book.temp_cover_url || !book.temp_url_expires_at || new Date(book.temp_url_expires_at) < currentTime) {
+            const getObjectParams = {
+                Bucket: bucketName,
+                Key: book.cover_image,
+            };
+            const command = new GetObjectCommand(getObjectParams);
+            const expiresIn = 3600;
+            const url = await getSignedUrl(s3, command, { expiresIn: expiresIn });
+
+            // Calculate expiration timestamp
+            const expirationTime = new Date(currentTime.getTime() + expiresIn * 1000).toISOString();
+
+            // Update the temp_cover_url and temp_url_expires_at in the database
+            await db.query(
+                "UPDATE books SET temp_cover_url = $1, temp_url_expires_at = $2 WHERE id = $3;",
+                [url, expirationTime, book.id]
+            );
+
+            // Update in memory result
+            book.temp_cover_url = url;
+            book.temp_url_expires_at = expirationTime;
+        }
     }
+
+    return result.rows;
 }
 
 app.get("/", async (req, res) => {
     
-    // TODO: only get a new url when the last one expires
-    getCoverImageUrl();
-
-    // Gets all the books the current user has uploaded
-    const result = await db.query("SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC", [current_user]);
+    const books = await getCoverImageUrl();
     
     // Renders the home page
     res.render("index.ejs", 
         {
-            books: result.rows,
+            books: books,
             categories: categories,
             current_user: users.find((user) => user.id === current_user),
             users: users
