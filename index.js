@@ -35,7 +35,7 @@ app.use(express.static("public"));
 
 let books = [
     {id: 1, name: 'Think And Grow Rich', author: 'Napoleon Hill', category_id: 2, cover_image: 'assets/think-and-grow-rich.jpg'},
-    {id: 2, name: 'Think And Grow Rich', author: 'Napoleon Hill', category_id: 2, cover_image: 'assets/think-and-grow-rich.jpg'},
+    {id: 2, name: 'Think And Grow Rich', author: 'Napoleon Hill', category_id: 2, cover_image: 'assets/f82f272c2fbd8a054becf267bcb875e65343d1be389d51eb87fef71380b850e3.jpeg'},
 ];
 
 let categories = [
@@ -79,8 +79,8 @@ app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
     // console.log(req.file);
 
     // Resize image
-    const buffer = await sharp(req.file.buffer).resize({width: 400, height: 500, fit: "contain"}).toBuffer();
-
+    const buffer = await sharp(req.file.buffer).resize({width: 700, height: 1000, fit: "cover"}).toBuffer();
+    
     const params = {
         Bucket: bucketName,
         Key: randomImageName(),
