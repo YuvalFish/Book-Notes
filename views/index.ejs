@@ -67,7 +67,8 @@
             <% if (locals.books) { %>
                 <% for (const book of books) { %>
 
-                    <form action="/book/<%=book.id%>" method="get">
+                    <!-- Uses the book cover image as id for it is a random 32 bytes string -->
+                    <form action="/book/<%=book.cover_image%>" method="get">
                         <button type="submit" class="book">
                             <img src="<%=book.temp_cover_url%>" alt="book cover" class="book-cover">
                         </button>

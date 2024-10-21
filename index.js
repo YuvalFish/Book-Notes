@@ -100,8 +100,32 @@ async function getCoverImageUrl() {
     return result.rows;
 }
 
+// Basic security measures to ensure the user won't upload a malicious file / a file which is not an image
+function imageInputValidation(image) {
+
+    // checks the file extension - can be spoffed easily
+    const extensions = image.originalname.split('.');
+    const file_extension = extensions[extensions.length - 1].toLowerCase();
+
+    if (file_extension != 'jpg' && file_extension != 'png') {
+        return "Invalid file upload. Please ensure the file is a valid image (JPEG or PNG) and meets the size requirements.";
+    }
+
+    // check the MIME type - can be spoffed easily
+    if (image.mimetype != 'image/jpeg' && image.mimetype != 'image/png') {
+        return "Invalid file upload. Please ensure the file is a valid image (JPEG or PNG) and meets the size requirements.";
+    }
+
+    // limit file size to be under 1mb
+    if (image.size > 1024*1024 ) {
+        return "File size is too large. Please upload an image smaller than 1MB.";
+    }
+
+    return null;
+}
+
 app.get("/", async (req, res) => {
-    
+
     const books = await getCoverImageUrl();
     
     // Renders the home page
@@ -116,7 +140,6 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/add-book", (req, res) => {
-    console.log('current_user',current_user);
 
     res.render("new_book.ejs", 
         {
@@ -126,10 +149,17 @@ app.get("/add-book", (req, res) => {
     );
 });
 
+// POST endpoint to create a new book for a user
 app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     // console.log(req.file);
     const data = req.body;
+
+    const imageValidation = imageInputValidation(req.file);
+    // const imageValidation = "Invalid file upload. Please ensure the file is a valid image (JPEG or PNG) and meets the size requirements.";
+    if (imageValidation !== null) {
+        return res.render("new_book.ejs", {user: current_user, categories: categories, error: imageValidation});
+    }
 
     // Resize image
     const buffer = await sharp(req.file.buffer).resize({width: 700, height: 1000, fit: "cover"}).toBuffer();

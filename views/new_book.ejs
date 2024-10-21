@@ -16,9 +16,14 @@
             <% if (locals.user) { %>
                 <input type="hidden" name="user_id" value="<%=user%>"/>
             <% } %>
+
+            <% if (locals.error) { %>
+                <h1><%=error%></h1>
+            <% } %>
             
             <input type="text" name="book_name" class="input-field" placeholder="Book Name" required>
             <input type="text" name="author_name" class="input-field" placeholder="Author Name" required>
+            
             <select class="input-field" name="category" required>
                 <option value="0">Select a category</option>
                 <!-- Renders all categories -->
@@ -29,7 +34,7 @@
                 <% } %>
             </select>
 
-            <input type="file" name="cover-image" id="cover-upload" required hidden>
+            <input type="file" name="cover-image" id="cover-upload" required hidden accept="image/*">
             <label for="cover-upload" class="cover-upload">
                 <img src="assets/plus-icon.png" alt="plus icon" class="plus-icon">
             </label>
