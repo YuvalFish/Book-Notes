@@ -1,0 +1,110 @@
+:root {
+    --color-background: #ffffff;
+    --color-border: #000000;
+    --color-primary: #FFCE33;
+    --color-hover: #eec028;
+    --font-family: "IBM Plex Sans Condensed", sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-style: normal;
+}
+
+.back-button {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 150px;
+    align-items: center;
+}
+
+.book-bar {
+    height: 150px;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+}
+
+.book-cover {
+    height: 150px;
+}
+
+.book-details {
+    margin: 5px 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px 10px; 
+    margin-top: 50px;
+    width: 100%;
+    height: auto;
+}
+
+.add-note {
+    border: 1px solid var(--color-border);
+    width: 300px;
+    height: 400px;
+    background-color: var(--color-background);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.plus-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.add-note:hover {
+    background-color: var(--color-primary);
+    transition: background-color .5s;
+}
+
+.note {
+    width: 300px;
+    height: 400px;
+    background-color: var(--color-primary);
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+}
+
+.note > p {
+    font-size: 1.3rem;
+}
+
+.trash-icon {
+    /* position: absolute;
+    top: 350px;
+    left: 250px; */
+    height: 25px;
+}
+
+.delete-note-button {
+    position: absolute;
+    top: 350px;
+    left: 250px;
+    height: 25px;
+    width: 25px; 
+    background: none;
+    border: none; 
+    padding: 0; 
+    margin: 0; 
+    cursor: pointer;
+}
