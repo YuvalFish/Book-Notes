@@ -56,14 +56,11 @@ const db = new pg.Client({
 });
 db.connect();
 
-let categories = [
-    {id: 1, name: 'Finance'},
-    {id: 2, name: 'Personal Development'},
-    {id: 3, name: 'Business'}
-];
+let categories = null;
 
 let current_user = 1;
 let upload_error = null;
+let category = 0;
 
 let users = [
     {id: 1, name: 'Yuval'},
@@ -71,9 +68,24 @@ let users = [
     {id: 3, name: 'Another Guy'}
 ];
 
+// Gets the categories if not already
+async function getCategories() {
+    if (categories == null) {
+        const result = await db.query("SELECT * FROM categories;")
+        categories = result.rows;
+    }
+}
+
 async function getCoverImageUrl() {
+    let result = null;
     // Gets all the books the current user has uploaded
-    const result = await db.query("SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC", [current_user]);
+    if (category == 0) {
+        result = await db.query("SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC;", [current_user]);
+    }
+    // Gets all the books the current user has uploaded with the desired category 
+    else {
+        result = await db.query("SELECT * FROM books WHERE user_id = $1 AND category_id = $2 ORDER BY created_at DESC;", [current_user, category]);
+    }
 
     // Foreach book fetch the temp image cover url from AWS S3 and update it in the database
     for (const book of result.rows) {
@@ -134,6 +146,7 @@ function imageInputValidation(image) {
 app.get("/", async (req, res) => {
 
     const books = await getCoverImageUrl();
+    await getCategories();
     
     // Renders the home page
     res.render("index.ejs", 
@@ -177,6 +190,7 @@ app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
     // Resize image
     const buffer = await sharp(req.file.buffer).resize({width: 700, height: 1000, fit: "cover"}).toBuffer();
     
+    // Sets a random image name
     const imageName = randomImageName();
     const params = {
         Bucket: bucketName,
@@ -185,6 +199,7 @@ app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
         ContentType: req.file.mimetype,
     };
 
+    // Uploads the image to s3
     const command = new PutObjectCommand(params);
     await s3.send(command);
 
@@ -193,6 +208,14 @@ app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+
+    res.redirect("/");
+});
+
+// changes the desired category
+app.post("/category", async (req, res) => {
+    
+    category = req.body.id;
 
     res.redirect("/");
 });

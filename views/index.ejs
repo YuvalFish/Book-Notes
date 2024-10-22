@@ -23,11 +23,11 @@
             <!-- Renders all categories -->
             <form action="/category" method="post" class="form-categories">
 
-                <button type="submit" class="category" value="0">All</button>
+                <button type="submit" class="category" name="id" value="0">All</button>
 
                 <% if (locals.categories) { %>
                     <% for (const category of categories) { %>
-                        <button type="submit" class="category" value="<%=category.id%>"><%=category.name%></button>
+                        <button type="submit" class="category" name="id" value="<%=category.id%>"><%=category.name%></button>
                     <% } %>
                 <% } %>
 
