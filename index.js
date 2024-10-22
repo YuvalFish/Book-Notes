@@ -10,6 +10,12 @@ import { getSignedUrl, S3RequestPresigner } from "@aws-sdk/s3-request-presigner"
 import dotenv from 'dotenv';
 import sharp from 'sharp';
 
+// Get dirname
+import { fileURLToPath } from 'url'
+import path from 'path'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 dotenv.config();
 
 // Generates a random image name to remove overwrites and improve security
@@ -38,7 +44,7 @@ const upload = multer({ storage: storage });
 
 // Middlewares
 app.use(express.urlencoded({extended: true}));
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
 // Connects to the database
 const db = new pg.Client({
@@ -57,6 +63,7 @@ let categories = [
 ];
 
 let current_user = 1;
+let upload_error = null;
 
 let users = [
     {id: 1, name: 'Yuval'},
@@ -141,10 +148,15 @@ app.get("/", async (req, res) => {
 
 app.get("/add-book", (req, res) => {
 
+    // Reset error message
+    let error = upload_error;
+    upload_error = null;
+
     res.render("new_book.ejs", 
         {
             user: current_user,
-            categories: categories
+            categories: categories,
+            error: error
         }
     );
 });
@@ -155,10 +167,11 @@ app.post("/api/new-book", upload.single('cover-image') ,async (req, res) => {
     // console.log(req.file);
     const data = req.body;
 
+    // if the image is not valid return the page with the error message
     const imageValidation = imageInputValidation(req.file);
-    // const imageValidation = "Invalid file upload. Please ensure the file is a valid image (JPEG or PNG) and meets the size requirements.";
     if (imageValidation !== null) {
-        return res.render("new_book.ejs", {user: current_user, categories: categories, error: imageValidation});
+        upload_error = imageValidation;
+        return res.redirect("/add-book");
     }
 
     // Resize image

@@ -1,11 +1,24 @@
+:root {
+    --color-primary: #FFCE33;        
+    --color-primary-hover: #eec028;  
+    --color-background: #FFFFFF;   
+    --color-text: #000000;  
+    --color-border: #CCCCCC;         
+    --color-error: #FF0000;           
+    --color-category-bg: #FFFFFF;   
+    --font-family-primary: "IBM Plex Sans Condensed", sans-serif;    
+    --font-family-secondary: "IBM Plex Sans", sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 
-    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-family: var(--font-family-primary);
     font-weight: 700;
     font-style: normal;
+    color: var(--color-text);
 }
 
 html {
@@ -18,7 +31,6 @@ a {
 
 .navbar {
     margin-top: 20px;
-    /* border: 1px solid; */
     padding: 0 15px;
     display: flex;
     align-items: center;
@@ -38,7 +50,9 @@ form {
 
 .category {
     width: 150px;
-    background-color: white;
+    background-color: var(--color-category-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
     border-radius: 999px;
     margin: 0 10px;
     font-size: 20px;
@@ -49,7 +63,7 @@ form {
 }
 
 .category:hover {
-    background-color: #FFCE33;
+    background-color: var(--color-primary);
 }
 
 .form-categories {
@@ -70,7 +84,7 @@ form {
     width: 50px;
     border-radius: 50%;
     border: none;
-    background-color: #FFCE33;
+    background-color: var(--color-primary);
     font-size: 30px;
     margin-left: auto;
     cursor: pointer;
@@ -78,7 +92,7 @@ form {
 }
 
 .profile-picture:hover {
-    background-color: #eec028;
+    background-color: var(--color-primary-hover);
 }
 
 .dropdown-menu {
@@ -86,8 +100,7 @@ form {
     position: absolute;
     top: 60px;
     right: 0;
-    background-color: #FFCE33;
-    /* border: 1px solid black; */
+    background-color: var(--color-primary);
     border-radius: 15px;
     width: 150px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -110,7 +123,7 @@ form {
 }
 
 .dropdown-menu button {
-    background-color: #FFCE33;
+    background-color: var(--color-primary);
     border: none;
     width: 100%;
     padding: 10px 0;
@@ -120,7 +133,7 @@ form {
 }
 
 .dropdown-menu button:hover {
-    background-color: #eec028;
+    background-color: var(--color-primary-hover);
 }
 
 .grid-container {
@@ -128,17 +141,16 @@ form {
     grid-template-columns: repeat(6, 1fr);
     gap: 40px 10px; 
     margin-top: 50px;
-    /* border: 1px solid black; */
     padding-left: 50px;
     width: 100%;
     height: auto;
 }
 
 .add-book {
-    border: 1px solid black;
+    border: 1px solid var(--color-border);
     width: 200px;
     height: 300px;
-    background-color: white;
+    background-color: var(--color-background);
     border-radius: 15px;
     cursor: pointer;
     transition: background-color .2s;
@@ -150,17 +162,16 @@ form {
 }
 
 .add-book:hover {
-    background-color: #FFCE33;
+    background-color: var(--color-primary);
     transition: background-color .5s;
 }
 
 .book {
-    /* border: 1px solid black; */
     width: 200px;
     height: 300px;
     cursor: pointer;
     border: none;
-    background-color: white;
+    background-color: var(--color-background);
 }
 
 .book img {
@@ -182,6 +193,6 @@ form {
 }
 
 .author-name {
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: var(--font-family-secondary);
     font-weight: 400;
 }

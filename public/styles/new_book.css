@@ -1,9 +1,17 @@
+:root {
+    --color-background: #ffffff;
+    --color-border: #000000;
+    --color-primary: #FFCE33;
+    --color-hover: #eec028;
+    --font-family: "IBM Plex Sans Condensed", sans-serif;
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 
-    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
     font-style: normal;
 }
@@ -33,6 +41,7 @@
     padding: 5px;
     font-size: 1.5rem;
     margin-top: 15px;
+    border: 1px solid var(--color-border);
 }
 
 select.input-field {
@@ -42,6 +51,7 @@ select.input-field {
 .form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .cover-upload {
@@ -49,7 +59,7 @@ select.input-field {
     width: 400px;
     height: 500px;
     cursor: pointer;
-    border: 1px solid;
+    border: 1px solid var(--color-border);
     border-radius: 15px;
     position: relative;
     transition: background-color 0.3s;
@@ -72,12 +82,12 @@ select.input-field {
 }
 
 button.input-field {
-    background-color: #FFCE33;
+    background-color: var(--color-primary);
     cursor: pointer;
     border: none;
     transition: background-color 0.3s;
 }
 
 button.input-field:hover {
-    background-color: #eec028;
+    background-color: var(--color-hover);
 }
