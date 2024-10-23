@@ -67,17 +67,19 @@ let users = [
     {id: 3, name: 'Another Guy'}
 ];
 
-let notes = [
-    {id: 1, content: 'lorem ipsum', user_id: 1, book_id: 1},
-    {id: 2, content: 'some more lorem ipsum asdasd asdas d asd asd asd asd asd asd as', user_id: 1, book_id: 1}
-]
-
 // Gets the categories if not already
 async function getCategories() {
     if (categories == null) {
         const result = await db.query("SELECT * FROM categories;")
         categories = result.rows;
     }
+}
+
+// Given a book id returns the current user notes on that book
+async function getUserNotes(book_id) {
+    const result = await db.query("SELECT * FROM notes WHERE user_id = $1 AND book_id = $2 ORDER BY id DESC;", [current_user, book_id]);
+
+    return result.rows;
 }
 
 async function getBooks() {
@@ -229,6 +231,7 @@ app.get("/book/:id", async (req, res) => {
     // Gets the book
     const books = await getBooks();
     const book = books.find((book) => book.cover_image == req.params.id);
+    const notes = await getUserNotes(book.id);
 
     res.render("book.ejs", { 
         book: book,
