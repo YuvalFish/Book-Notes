@@ -248,6 +248,14 @@ app.post("/api/add-note", async (req, res) => {
     res.redirect(`/book/${req.body.book_cover_name}`);
 });
 
+app.post("/api/delete-note", async (req, res) => {
+    console.log(req.body);
+
+    await db.query("DELETE FROM notes WHERE id = $1;", [req.body.note_id]);
+
+    res.redirect(`/book/${req.body.book_cover_name}`);
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
