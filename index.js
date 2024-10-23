@@ -231,12 +231,21 @@ app.get("/book/:id", async (req, res) => {
     // Gets the book
     const books = await getBooks();
     const book = books.find((book) => book.cover_image == req.params.id);
+
     const notes = await getUserNotes(book.id);
 
     res.render("book.ejs", { 
         book: book,
         notes: notes 
     });
+});
+
+app.post("/api/add-note", async (req, res) => {
+    console.log(req.body);
+
+    await db.query("INSERT INTO notes (content, user_id, book_id) VALUES ($1,$2,$3);", [' ', current_user, req.body.book_id]);
+
+    res.redirect(`/book/${req.body.book_cover_name}`);
 });
 
 app.listen(PORT, () => {
