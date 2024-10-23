@@ -3,6 +3,7 @@
     --color-border: #000000;
     --color-primary: #FFCE33;
     --color-hover: #eec028;
+    --color-delete: #ff4157;
     --font-family: "IBM Plex Sans Condensed", sans-serif;
 }
 
@@ -45,6 +46,28 @@
 
 .book-details {
     margin: 5px 10px;
+}
+
+.delete-book-form {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-book {
+    width: 150px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid var(--color-delete);
+    border-radius: 15px;
+    color: var(--color-delete);
+    transition: all 0.5s;
+}
+
+.delete-book:hover {
+    background: var(--color-delete);
+    color: #ffffff;
 }
 
 .grid-container {
@@ -90,9 +113,6 @@
 }
 
 .trash-icon {
-    /* position: absolute;
-    top: 350px;
-    left: 250px; */
     height: 25px;
 }
 

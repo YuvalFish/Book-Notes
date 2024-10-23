@@ -27,6 +27,10 @@
                 <h1 class="book-name"><%=book.name%></h1>
                 <h2 class="book-author"><%=book.author%></h2>
             </div>
+            
+            <form action="/api/delete-book" method="post" class="delete-book-form">
+                <button type="submit" class="delete-book">DELETE</button>
+            </form>
         </div>
 
         <!-- Displays notes the user made about the book -->

@@ -2,13 +2,12 @@ import express from "express";
 import pg from "pg";
 import multer from "multer";
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+import sharp from 'sharp';
 
 // aws-sdk
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl, S3RequestPresigner } from "@aws-sdk/s3-request-presigner";
-
-import dotenv from 'dotenv';
-import sharp from 'sharp';
 
 // Get dirname
 import { fileURLToPath } from 'url'
