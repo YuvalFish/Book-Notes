@@ -45,9 +45,20 @@
 
             <% if (locals.notes) { %>
                 <% for (const note of notes) { %>
-                    <div class="note">
-                        <p><%=note.content%></p>
+                    <div class="note" data-note-id="<%= note.id %>">
+                        <!-- Note Content -->
+                        <p class="note-content" contenteditable="false">
+                            <%= note.content.trim().length === 0 ? 'Click to edit' : note.content %>
+                        </p>
+
+                        <!-- Edit Note -->
+                        <form action="/api/update-note" method="post" class="update-note-form" style="display: none;">
+                            <input type="hidden" name="note_id" value="<%=note.id%>">
+                            <input type="hidden" name="note_content" class="note-content-hidden">
+                            <input type="hidden" name="book_cover_name" value="<%=book.cover_image%>">
+                        </form>
                         
+                        <!-- Delete Note -->
                         <form action="/api/delete-note" method="post" class="delete-note-form">
                             <input type="hidden" name="note_id" value="<%=note.id%>">
                             <input type="hidden" name="book_cover_name" value="<%=book.cover_image%>">
@@ -61,5 +72,6 @@
         </div>
     </div>
     
+<script src="/scripts/book.js"></script>
 </body>
 </html>

@@ -241,17 +241,19 @@ app.get("/book/:id", async (req, res) => {
 });
 
 app.post("/api/add-note", async (req, res) => {
-    console.log(req.body);
-
     await db.query("INSERT INTO notes (content, user_id, book_id) VALUES ($1,$2,$3);", [' ', current_user, req.body.book_id]);
 
     res.redirect(`/book/${req.body.book_cover_name}`);
 });
 
 app.post("/api/delete-note", async (req, res) => {
-    console.log(req.body);
-
     await db.query("DELETE FROM notes WHERE id = $1;", [req.body.note_id]);
+
+    res.redirect(`/book/${req.body.book_cover_name}`);
+});
+
+app.post("/api/update-note", async (req,res) => {
+    await db.query("UPDATE notes SET content = $1 WHERE id = $2", [req.body.note_content, req.body.note_id]);
 
     res.redirect(`/book/${req.body.book_cover_name}`);
 });
