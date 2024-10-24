@@ -34,11 +34,11 @@ document.querySelectorAll('.note-content').forEach(contentElement => {
         editForm.submit();
     });
 
-    contentElement.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            this.blur();
-        }
-    });
+    // contentElement.addEventListener('keydown', function(e) {
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault();
+    //         this.blur();
+    //     }
+    // });
 
 });

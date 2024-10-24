@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import sharp from 'sharp';
 
 // aws-sdk
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl, S3RequestPresigner } from "@aws-sdk/s3-request-presigner";
 
 // Get dirname
@@ -256,6 +256,26 @@ app.post("/api/update-note", async (req,res) => {
     await db.query("UPDATE notes SET content = $1 WHERE id = $2", [req.body.note_content, req.body.note_id]);
 
     res.redirect(`/book/${req.body.book_cover_name}`);
+});
+
+app.post("/api/delete-book/:cover", async (req,res) => {
+
+    console.log(req.body);
+    console.log(req.params);
+
+    // Deletes the image from S3
+    const params = {
+        Bucket: bucketName,
+        Key: req.params.cover
+    };
+
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
+
+    // Deletes the book from the database
+    await db.query("DELETE FROM books WHERE id = $1;", [req.body.book_id]);
+
+    res.redirect("/");
 });
 
 app.listen(PORT, () => {

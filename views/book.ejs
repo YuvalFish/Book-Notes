@@ -28,7 +28,9 @@
                 <h2 class="book-author"><%=book.author%></h2>
             </div>
             
-            <form action="/api/delete-book" method="post" class="delete-book-form">
+            <!-- Delete the entire book -->
+            <form action="/api/delete-book/<%=book.cover_image%>" method="post" class="delete-book-form">
+                <input type="hidden" name="book_id" value="<%=book.id%>">
                 <button type="submit" class="delete-book">DELETE</button>
             </form>
         </div>
@@ -43,6 +45,7 @@
                 </button>
             </form>
 
+            <!-- Render all the notes -->
             <% if (locals.notes) { %>
                 <% for (const note of notes) { %>
                     <div class="note" data-note-id="<%= note.id %>">
