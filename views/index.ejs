@@ -47,10 +47,26 @@
                                 <button type="submit" name="user" value="<%=user.id%>"><%=user.name%></button>
                             <% } %>
                         <% } %>
-
-                        <button type="submit" name="user" value="add">Add User</button>
                     </form>
+
+                    <!-- Add user button -->
+                    <button id="open-add-user">Add User</button>
+                    
+                    <% if (users.length > 1) { %>
+                        <form action="/api/delete-user" method="post">
+                        <button class="delete-user" type="submit" name="user" value="<%=current_user.id%>">Delete User: <%= current_user.name %></button>
+                        </form>
+                    <% } %>
                 </div>
+            </div>
+
+            <!-- Add user popup -->
+            <div class="popup" id="popup">
+                <form action="/api/add-user" method="post" class="popup-form">
+                    <svg class="close-popup-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M7 17L16.8995 7.10051" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7 7.00001L16.8995 16.8995" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                    <input type="text" placeholder="Username" class="add-user-input" name="username" required>
+                    <button type="submit" class="add-user-submit-button">Add</button>
+                </form>
             </div>
 
         </div>

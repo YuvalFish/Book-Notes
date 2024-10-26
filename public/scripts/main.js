@@ -11,3 +11,16 @@ window.onclick = function(e) {
         }
     }
 }
+
+// Popup functionality
+const openPopup = document.querySelector("#open-add-user");
+const closePopup = document.querySelector(".close-popup-svg");
+const popup = document.querySelector(".popup");
+
+openPopup.addEventListener('click', () => {
+    popup.classList.add("open");
+});
+
+closePopup.addEventListener('click', () => {
+    popup.classList.remove("open");
+});

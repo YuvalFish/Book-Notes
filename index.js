@@ -4,6 +4,7 @@ import multer from "multer";
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import sharp from 'sharp';
+import axios from 'axios';
 
 // aws-sdk
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
@@ -44,6 +45,7 @@ const upload = multer({ storage: storage });
 // Middlewares
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
+app.use(express.json());
 
 // Connects to the database
 const db = new pg.Client({
@@ -57,15 +59,9 @@ db.connect();
 
 let categories = null;
 
-let current_user = 1;
+let current_user = undefined;
 let upload_error = null;
 let category = 0;
-
-let users = [
-    {id: 1, name: 'Yuval'},
-    {id: 2, name: 'Someone'},
-    {id: 3, name: 'Another Guy'}
-];
 
 // Gets the categories if not already
 async function getCategories() {
@@ -75,6 +71,12 @@ async function getCategories() {
     }
 }
 
+// Returns the users
+async function getUsers() {
+    const result = await db.query("SELECT * FROM users;");
+    return result.rows;
+}
+
 // Given a book id returns the current user notes on that book
 async function getUserNotes(book_id) {
     const result = await db.query("SELECT * FROM notes WHERE user_id = $1 AND book_id = $2 ORDER BY id DESC;", [current_user, book_id]);
@@ -82,15 +84,15 @@ async function getUserNotes(book_id) {
     return result.rows;
 }
 
-async function getBooks() {
+async function getBooks(user = current_user) {
     let result = null;
     // Gets all the books the current user has uploaded
     if (category == 0) {
-        result = await db.query("SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC;", [current_user]);
+        result = await db.query("SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC;", [user]);
     }
     // Gets all the books the current user has uploaded with the desired category 
     else {
-        result = await db.query("SELECT * FROM books WHERE user_id = $1 AND category_id = $2 ORDER BY created_at DESC;", [current_user, category]);
+        result = await db.query("SELECT * FROM books WHERE user_id = $1 AND category_id = $2 ORDER BY created_at DESC;", [user, category]);
     }
 
     // Foreach book fetch the temp image cover url from AWS S3 and update it in the database
@@ -151,6 +153,12 @@ function imageInputValidation(image) {
 
 app.get("/", async (req, res) => {
 
+    const users = await getUsers();
+
+    if (current_user == undefined) {
+        current_user = users[0].id;
+    }
+
     const books = await getBooks();
     await getCategories();
     
@@ -159,7 +167,7 @@ app.get("/", async (req, res) => {
         {
             books: books,
             categories: categories,
-            current_user: users.find((user) => user.id === current_user),
+            current_user: users.find((user) => user.id == current_user),
             users: users
         }
     );
@@ -259,10 +267,6 @@ app.post("/api/update-note", async (req,res) => {
 });
 
 app.post("/api/delete-book/:cover", async (req,res) => {
-
-    console.log(req.body);
-    console.log(req.params);
-
     // Deletes the image from S3
     const params = {
         Bucket: bucketName,
@@ -274,6 +278,43 @@ app.post("/api/delete-book/:cover", async (req,res) => {
 
     // Deletes the book from the database
     await db.query("DELETE FROM books WHERE id = $1;", [req.body.book_id]);
+
+    res.redirect("/");
+});
+
+app.post("/user", (req,res) => {
+    current_user = req.body.user;
+
+    res.redirect("/");
+});
+
+app.post("/api/add-user", async (req, res) => {
+    try {
+        await db.query("INSERT INTO users (name) VALUES ($1);", [req.body.username]);
+    } catch(error) {
+        console.log(error);
+    }
+
+    res.redirect("/");
+});
+
+app.post("/api/delete-user", async (req, res) => {
+
+    const books = await getBooks(req.body.user);
+
+    // Deletes all the user books from aws and the database
+    for(const book of books) {
+        await axios.post(`http://localhost:${PORT}/api/delete-book/${book.cover_image}`, 
+            {
+                book_id: book.id
+            }
+        );
+    }
+
+    // Deletes the user from the database
+    await db.query("DELETE FROM users WHERE id = $1;", [req.body.user]);
+
+    current_user = undefined;
 
     res.redirect("/");
 });
